@@ -1,0 +1,14 @@
+---
+- name: cleanup Jenkins build nodes Docker related resources
+  hosts: all
+  remote_user: <serviceaccount>
+
+  tasks:
+    - name: Docker Prune
+      shell: docker system prune -f a; 2> /dev/null
+      ignore_errors: yes
+      register: docker_prune
+    
+    - name: Log Docker Prune
+      debug: 
+        var: docker_prune.stdout_lines

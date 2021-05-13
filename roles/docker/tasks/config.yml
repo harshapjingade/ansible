@@ -1,0 +1,31 @@
+- name: apt-get update
+  apt: update_cache=yes
+  become: yes
+
+- name: Install packages to allow apt to use a repository over HTTPS
+  apt: 
+    name: [apt-transport-https, ca-certificates, curl, software-properties-common]
+    state: present
+  become: yes
+
+- name: Get Docker GPG Key
+  shell: 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -'
+  args:
+    warn: no
+
+- name: Add stable repository
+  apt_repository: repo='deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable' state=present
+  become: yes
+
+- name: apt-get update
+  apt: update_cache=yes
+  become: yes
+
+- name: Install Docker version
+  apt: name=docker-ce state=present
+  become: yes
+
+- name: Make sure docker is running
+  service: name=docker state=started
+  become: yes
+

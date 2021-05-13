@@ -1,0 +1,8 @@
+---
+# installing docker
+
+- hosts: all
+  remote_user: <serviceaccount>
+  
+  roles:
+   - docker

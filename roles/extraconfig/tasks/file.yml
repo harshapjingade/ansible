@@ -1,0 +1,38 @@
+---
+- name: update ca-certificate
+  apt: name=ca-certificates state=latest update_cache=yes
+  become: true
+
+- name: change file persmission for id_rsa
+  file: path='/home/{{ ansible_remote_user_id }}/.ssh/id_rsa' mode=0600
+
+- name: Install Git
+  apt: name=git state=latest
+  become: true
+
+- name: Install sshpass
+  apt: name=sshpass state=latest
+  become: true
+
+- name: Install rpm
+  apt: name=rpm state=latest
+
+- name: apt-get update
+  apt: update_cache=yes
+  become: true
+
+- name: Install chrome
+  apt: name=google-chrome-stable state=latest
+  become: true
+
+- name: Install java 8
+  apt: name=openjdk-8-jdk state=latest
+  become: true
+
+- name: Set git user email
+  git_config: name=user.email scope=global value='{{ ansible_remote_user_id }}@<domainname>'
+  tags: git-config
+
+- name: Set git user name
+  git_config: name=user.name scope=global value='{{ ansible_remote_user_id }}'
+  tags: git-config
