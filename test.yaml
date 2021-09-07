@@ -1,0 +1,14 @@
+---
+- name: Finding uptime and free ram
+  hosts: all
+  tasks:
+    - name: Finding uptime
+      shell: uptime
+      register: up_time
+    - debug:
+        var: up_time.stdout_lines
+    - name: Finding RAM info
+      shell: free -m
+      register: ram_info
+    - debug:
+        var: ram_info.stdout_lines
