@@ -1,0 +1,37 @@
+---
+- name: Install and configure tomcat
+  hosts: all
+  gather_facts: false
+  vars:
+    req_java: java-1.8.0-openjdk
+    set_java: jre-1.8.0-openjdk
+    req_tomcat_ver: 9.0.26
+    tomcat_url: https://mirrors.estointernet.in/apache/tomcat/tomcat-{{req_tomcat_ver.split('.')[0]}}/v{{req_tomcat_ver}}/bin/apache-tomcat-{{req_tomcat_ver}}.tar.gz
+  become: yes
+  tasks:
+    - name: Updating repos
+      yum:
+        name: "*"
+        state: latest
+    - name: Instaling required java
+      yum:
+        name: "{{req_java}}"
+        state: present
+    - name: setting default java
+      alternatives:
+        name: java
+        link: /usr/bin/java
+        path: /usr/lib/jvm/{{set_java}}/bin/java
+    - name: Downloading required tomcat
+      get_url:
+        url: "{{tomcat_url}}"
+        dest: /usr/local
+    - name: extracting downloaded tomcat
+      unarchive:
+        src: "/usr/local/apache-tomcat-{{req_tomcat_ver}}.tar.gz"
+        dest: /usr/local
+        remote_src: yes
+    - name: renaming tomcat home
+      command: mv /usr/local/apache-tomcat-{{req_tomcate_ver}} /usr/local/latest
+    - name: starting tomcat
+      shell: nohup /usr/local/latest/bin/startuo.sh &

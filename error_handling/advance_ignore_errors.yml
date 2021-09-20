@@ -1,0 +1,26 @@
+---
+- hosts: localhost
+  gather_facts: true
+  tasks:
+    - block:
+        - name: installing httpd for redhat os family
+          yum:
+            name: httpd
+            state: present
+        - name: starting httpd for redhat os family
+          service:
+            name: httpd
+            state: started
+        when: ansible_os_family=="Redhat"
+        become: yes
+    - block:
+        - name: installiong apache2 for debian os family
+          apt:
+            name: apache2
+            state: present
+        - name: starting apache2 for debian os family
+          service:
+            name: apache2
+            state: started
+        when: ansible_os_family="Debian"
+        become: yes

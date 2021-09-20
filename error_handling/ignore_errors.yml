@@ -1,0 +1,20 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - command: "ls /home/harsp/tomcat7"
+      register: tomcat7_out
+      ignore_errors: yes
+    - debug: var=tomcat7_out
+
+    - command: "ls /home/harsp/tomcat8"
+      register: tomcat8_out
+      ignore_errors: yes
+    - debug: var=tomcat8_out
+
+    - command: "ls /home/harsp/tomcat9"
+      register: tomcat9_out
+      ignore_errors: yes
+    - debug: var=tomcat9_out
+
+

@@ -1,0 +1,15 @@
+---
+- name: This is a simple playbook to understand command line arguments
+  hosts: all
+  gather_facts: false
+  become: yes
+  tasks:
+    - name: working with {{pkg}}
+      yum:
+        name: "{{pkg}}"
+        state: "{{req_state}}"
+
+# ansible-playbook install_uninstall.yml -e "pkg=nginx req_state=present"
+# ansible-playbook install_uninstall.yml -e "pkg=httpd req_state=present"
+# ansible-playbook install_uninstall.yml -e "pkg=nginx req_state=absent"
+# ansible-playbook install_uninstall.yml -e "pkg=httpd req_state=absent"

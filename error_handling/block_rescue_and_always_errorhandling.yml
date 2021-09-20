@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - block:
+        - name: finding files in /home/harsp/tomcat8
+          commad: "ls /home/harsp/tomcat8"
+          register: tomcat8_out
+        rescue:
+          - debug:
+              msg: "The given path:/home/harsp/tomcat8 is not a valid path"
+        always:
+          - debug:
+              msg: "This will always executes"
